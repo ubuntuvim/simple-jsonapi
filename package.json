@@ -1,0 +1,28 @@
+{
+  "name": "simple-jsonapi",
+  "version": "0.0.1",
+  "description": "A framework agnostic, flexible library to convert javascript objects to and from JSONAPI formats.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allistercsmith/simple-jsonapi.git"
+  },
+  "author": "Allister Smith <allistercsmith@gmail.com> (http://allistercsmith.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/allistercsmith/simple-jsonapi/issues"
+  },
+  "homepage": "https://github.com/allistercsmith/simple-jsonapi#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "joi": "^8.0.5",
+    "lodash": "^4.6.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "chai": "^3.5.0"
+  }
+}
