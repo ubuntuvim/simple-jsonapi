@@ -3,8 +3,10 @@
 var chai = require('chai'),
     expect = chai.expect,
     sinon = require('sinon'),
+    Joi = require('joi'),
     Document = require('../lib/document'),
-    Resource = require('../lib/resource');
+    Resource = require('../lib/resource'),
+    Serializer = require('../lib/serializer');
 
 describe('Document', function() {
     describe('constructor', function() {
@@ -97,44 +99,118 @@ describe('Document', function() {
     });
 
     describe('toJSON', function() {
-        it('', function() {
+        it('should build a JSONAPI document', function(done) {
+            var data = {
+                type: 'person',
+                id: 1,
+                attributes: {
+                    firstName: 'John',
+                    lastName: 'Smith'
+                }
+            };
+            var meta = {
+                foo: 'bar'
+            };
+            var jsonapi = {
+                version: '1.0'
+            };
+            var links = {
+                self: 'http://api.example.com/users/1'
+            };
+            var expected = {
+                data: data,
+                meta: meta,
+                jsonapi: jsonapi,
+                links: links
+            };
 
+            var document = new Document();
+            document.meta = meta;
+            document.jsonapi = jsonapi;
+            document.links = links;
+
+            sinon.stub(document, '_processData', function(callback) {
+                callback(null, data);
+            });
+
+            sinon.stub(document, '_processIncluded', function(callback) {
+                callback(null, null);
+            });
+
+            sinon.stub(Joi, 'validate', function(payload, schema, callback) {
+                callback(null, expected);
+            });
+
+            document.toJSON(function(err, result) {
+                expect(err).to.equal(null);
+                expect(result).to.deep.equal(expected);
+
+                document._processData.restore();
+                document._processIncluded.restore();
+                Joi.validate.restore();
+
+                return done();
+            });
         });
     });
 
     describe('_processData', function() {
-        it('', function() {
+        it('should build a JSONAPI data element', function(done) {
+            var data = {
+                type: 'person',
+                id: 1,
+                attributes: {
+                    firstName: 'John',
+                    lastName: 'Smith'
+                }
+            };
+            var resource = new Resource();
+            var document = new Document(null, resource);
 
-        });
-    });
+            sinon.stub(resource, 'toJSON', function(callback) {
+                callback(null, data);
+            });
 
-    describe('_processErrors', function() {
-        it('', function() {
+            document._processData(function(err, result) {
+                expect(err).to.equal(null);
+                expect(result).to.deep.equal(data);
 
-        });
-    });
+                resource.toJSON.restore();
 
-    describe('_processMeta', function() {
-        it('', function() {
-
-        });
-    });
-
-    describe('_processJsonApi', function() {
-        it('', function() {
-
-        });
-    });
-
-    describe('_processLinks', function() {
-        it('', function() {
-
+                return done();
+            });
         });
     });
 
     describe('_processIncluded', function() {
-        it('', function() {
+        it('should build a JSONAPI included element', function(done) {
+            var included = {
+                type: 'address',
+                id: 1,
+                attributes: {
+                    line: '123 Testing Way',
+                    town: 'Test Town'
+                }
+            };
+            var resource = new Resource();
+            var document = new Document();
 
+            document.included = [
+                resource
+            ];
+
+            sinon.stub(resource, 'toJSON', function(callback) {
+                callback(null, included);
+            });
+
+            document._processIncluded(function(err, result) {
+                expect(err).to.equal(null);
+                expect(result).to.deep.equal([included]);
+
+                resource.toJSON.restore();
+
+                return done();
+            });
         });
     });
 });

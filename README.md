@@ -1,5 +1,7 @@
 [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
+[![NPM][npm-image]][npm-url]
+
 # Simple jsonapi
 A framework agnostic, flexible library to convert javascript objects to and from JSONAPI formats.
 
@@ -11,3 +13,6 @@ I'm in the process of writing up tests and proper documentation. Feel free to ex
 
 [coveralls-image]: https://coveralls.io/repos/github/allistercsmith/simple-jsonapi/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/allistercsmith/simple-jsonapi?branch=master
+
+[npm-image]: https://nodei.co/npm/simple-jsonapi.png?downloads=true
+[npm-url]: https://nodei.co/npm/simple-jsonapi/
