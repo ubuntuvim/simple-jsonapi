@@ -20,7 +20,7 @@ describe('Document', function() {
         });
 
         it('should override config variables', function() {
-            var document = new Document({
+            var document = new Document(null, {
                 showImplementation: false,
                 validate: false
             });
@@ -165,7 +165,7 @@ describe('Document', function() {
                 }
             };
             var resource = new Resource();
-            var document = new Document(null, resource);
+            var document = new Document(resource);
 
             sinon.stub(resource, 'toJSON', function(callback) {
                 callback(null, data);
